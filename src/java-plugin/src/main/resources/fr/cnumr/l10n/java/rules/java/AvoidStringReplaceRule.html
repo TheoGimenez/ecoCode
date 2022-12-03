@@ -1,0 +1,14 @@
+<p>Using the "replace" method of the String object is not the best solution for this purpose induced unnecessary calculation by the cpu so unless energy consumption</p>
+<h2>Noncompliant Code Example</h2>
+<pre>
+        String test = "Toto tata";
+
+        test.replace("tata", "titi");
+
+</pre>
+<h2>Compliant Solution</h2>
+<pre>
+        String test = "Toto tata";
+    
+        StringUtils.replace(test, "tata", "titi");
+</pre>

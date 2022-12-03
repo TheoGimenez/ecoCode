@@ -1,106 +1,5 @@
 package fr.cnumr.java.checks;
 
-/*
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-
-import org.sonar.check.Priority;
-import org.sonar.check.Rule;
-import org.sonar.plugins.java.api.IssuableSubscriptionVisitor;
-import org.sonar.plugins.java.api.tree.*;
-import org.sonar.plugins.java.api.tree.Tree.Kind;
-*/
-
-/*
-@Rule(key = "UseFinalKeywordRule")
-public class UseFinalKeywordCheck extends IssuableSubscriptionVisitor {
-
-    @Override
-    public List<Kind> nodesToVisit() {
-        //return  Arrays.asList(Kind.VARIABLE);
-        return  Collections.unmodifiableList(Arrays.asList(Kind.METHOD_INVOCATION));
-    }
-
-    @Override
-    public void visitNode(Tree tree) {
-        reportIssue(tree, "TEST");
-    }
-}
-*/
-
-/*
-
-@Rule(key = "UseFinalKeywordCheckRule")
-public class UseFinalKeywordCheck extends IssuableSubscriptionVisitor {
-    @Override
-    public List<Kind> nodesToVisit() {
-        //return Collections.unmodifiableList(Arrays.asList(Kind.VARIABLE));
-        return Collections.unmodifiableList(Arrays.asList(Kind.METHOD_INVOCATION));
-    }
-    
-    @Override
-    public void visitNode(Tree tree) {
-        reportIssue(tree, "UseFinalKeywordCheckRule");
-        if (tree.is(Kind.VARIABLE)) {
-            MethodInvocationTree methodInvocation = (MethodInvocationTree) tree;
-            Symbol symbol = methodInvocation.symbol();
-
-            //reportIssue(tree, "UseFinalKeywordCheckRule");
-        }
-    }
-}*/
-
-/*
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-
-import org.sonar.check.Rule;
-import org.sonar.plugins.java.api.IssuableSubscriptionVisitor;
-import org.sonar.plugins.java.api.semantic.Symbol;
-import org.sonar.plugins.java.api.tree.MethodInvocationTree;
-import org.sonar.plugins.java.api.tree.Tree;
-import org.sonar.plugins.java.api.tree.Tree.Kind;
-import org.sonar.plugins.java.api.tree.VariableTree;
-
-@Rule(key = "UseFinalKeywordRule")
-public class UseFinalKeywordCheck extends IssuableSubscriptionVisitor {
-    @Override
-    public List<Kind> nodesToVisit() {
-        return Collections.unmodifiableList(Arrays.asList(Kind.VARIABLE));
-        // return Collections.singletonList(Kind.MEMBER_SELECT); //INSTANCE_OF, IMPORT, METHOD_REFERENCE, VARIABLE
-    }
-    
-    @Override
-    public void visitNode(Tree tree) {
-        if (tree.is(Kind.VARIABLE)) {
-            VariableTree variableTree = (VariableTree) tree;
-            System.out.println("-------------------------------------------------------");
-            System.out.println("-------------------------------------------------------");
-            System.out.println("-------------------------------------------------------");
-            System.out.println("-------------------------------------------------------");
-            System.out.println("-------------------------------------------------------");
-            System.out.println(variableTree.symbol().name());
-            System.out.println(variableTree.type().symbolType());
-            System.out.println(variableTree.symbol());
-
-
-
-            MethodInvocationTree methodInvocation = (MethodInvocationTree) tree;
-            Symbol symbol = methodInvocation.symbol();
-
-            if (symbol.isMethodSymbol() &&
-                symbol.name().equals("replace")
-                && methodInvocation.symbol().owner().name().equals("String"))
-                 {
-                    reportIssue(tree, "Use StringUtils.replace instead of String.replace !");
-            }
-        }
-    }
-}
-
-*/
 import java.util.HashMap; 
 import java.util.ArrayList;
 import java.util.List;
@@ -124,8 +23,15 @@ import org.sonar.plugins.java.api.tree.TryStatementTree;
 import org.sonar.plugins.java.api.tree.UnaryExpressionTree;
 import org.sonar.plugins.java.api.tree.VariableTree;
 
-@Rule(key = "UseFinalKeywordCheckRule")
+@Rule(
+        key = "UseFinalKeywordCheckRule",
+        name = "Developpement",
+        description = UseFinalKeywordCheck.MESSAGERULE,
+        priority = Priority.MINOR,
+        tags = {"bug"})
 public class UseFinalKeywordCheck extends IssuableSubscriptionVisitor {
+
+    protected static final String  MESSAGERULE = "This variable must be final.";
 
     private static final Tree.Kind[] ASSIGNMENT_KINDS = {
       Tree.Kind.ASSIGNMENT,
@@ -195,7 +101,7 @@ public class UseFinalKeywordCheck extends IssuableSubscriptionVisitor {
       for (VariableTree variableTree : variables) {
         Symbol symbol = variableTree.symbol();
         if (!assignments.contains(symbol) && !symbol.isFinal()) {
-            reportIssue(variableTree, "This variable \"" + variableTree.simpleName() + "\" must be final.");
+            reportIssue(variableTree, MESSAGERULE);
         }
       }
     }

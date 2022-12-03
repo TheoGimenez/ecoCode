@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import org.sonar.check.Priority;
 import org.sonar.check.Rule;
 import org.sonar.plugins.java.api.IssuableSubscriptionVisitor;
 import org.sonar.plugins.java.api.semantic.Symbol;
@@ -11,8 +12,16 @@ import org.sonar.plugins.java.api.tree.MethodInvocationTree;
 import org.sonar.plugins.java.api.tree.Tree;
 import org.sonar.plugins.java.api.tree.Tree.Kind;
 
-@Rule(key = "AvoidStringReplaceRule")
+@Rule(
+        key = "AvoidStringReplaceRule",
+        name = "Developpement",
+        description = AvoidStringReplaceCheck.MESSAGERULE,
+        priority = Priority.MINOR,
+        tags = {"bug"})
 public class AvoidStringReplaceCheck extends IssuableSubscriptionVisitor {
+
+    protected static final String  MESSAGERULE = "Use StringUtils.replace instead of String.replace !";
+
     @Override
     public List<Kind> nodesToVisit() {
         return Collections.unmodifiableList(Arrays.asList(Kind.METHOD_INVOCATION));
@@ -29,7 +38,7 @@ public class AvoidStringReplaceCheck extends IssuableSubscriptionVisitor {
                 symbol.name().equals("replace")
                 && methodInvocation.symbol().owner().name().equals("String"))
                  {
-                    reportIssue(tree, "Use StringUtils.replace instead of String.replace !");
+                    reportIssue(tree, MESSAGERULE);
             }
         }
     }

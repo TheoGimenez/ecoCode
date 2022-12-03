@@ -1,0 +1,14 @@
+<p>Using a non-final variable induced unnecessary calculation by the cpu so unless energy consumption</p>
+<h2>Noncompliant Code Example</h2>
+<pre>
+		String name = "EcoCode";
+		
+		System.out.println(name);
+
+</pre>
+<h2>Compliant Solution</h2>
+<pre>
+        final String name = "EcoCode";
+		
+        System.out.println(name);
+</pre>
