@@ -25,12 +25,9 @@ public class AvoidStringReplaceCheck extends IssuableSubscriptionVisitor {
             MethodInvocationTree methodInvocation = (MethodInvocationTree) tree;
             Symbol symbol = methodInvocation.symbol();
 
-            System.out.print("\t firstToken name =>");
-            System.out.println("\t" + methodInvocation.symbol().owner().name());
-
             if (symbol.isMethodSymbol() &&
                 symbol.name().equals("replace")
-                && !methodInvocation.symbol().owner().name().equals("StringUtils"))
+                && methodInvocation.symbol().owner().name().equals("String"))
                  {
                     reportIssue(tree, "Use StringUtils.replace instead of String.replace !");
             }
